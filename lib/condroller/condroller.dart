@@ -11,16 +11,6 @@ import 'package:image_picker/image_picker.dart';
 
 class TodoModelController extends GetxController {
 
-   var currentDate = DateTime.now().obs;
-  var currentTime = TimeOfDay.now().obs;
-
-   void updateDate(DateTime newDate) {
-    currentDate.value = newDate;
-  }
-  void updateTime(TimeOfDay newTime) {
-    currentTime.value = newTime;
-  }
-
 var selectedImagePath=''.obs;
 var selectedImageSize=''.obs;
 
@@ -38,7 +28,6 @@ backgroundColor: Colors.white,colorText: Colors.red
     );
   }
 }
-
 
 
   late Box<TodoApp> todoBox;

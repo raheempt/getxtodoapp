@@ -15,6 +15,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+    var time = DateTime.now();
+
   late Box<TodoApp> todoBox;
 
   @override
@@ -37,53 +40,58 @@ class _HomeScreenState extends State<HomeScreen> {
             return Center(child: Text('No todos'));
           }
 
-          return ListView.builder(
-            itemCount: todoBox.length,
-            itemBuilder: (ctx, index) {
-              TodoApp newTodo = todoBox.getAt(index) as TodoApp;
-              return Card(
-                child: SizedBox(
-                  width: 150,
-                  child: ListTile(
-                    
-                    title: Text(newTodo.name),
-                    subtitle: Text(newTodo.text),
-                    leading: CircleAvatar(backgroundImage: MemoryImage(newTodo.image),),     
-                    trailing: SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [ IconButton(
-                        onPressed: () {
-                           Navigator.push(
-                            context,
-                             MaterialPageRoute(
-                               builder: (context) => EditScreen(
-                                index: index,
-                                 name: newTodo.name,
-                                 text: newTodo.text,
-                                 image: newTodo.image,
-                               ),
-                             ),
-                           );
-                         },
-                         icon: const Icon(Icons.edit, color: Colors.blue),),
-                          // IconButton(
-                          //   onPressed: () async {
-                          //     todoBox.delete(index).then((value) =>
-                          //         ScaffoldMessenger.of(context).showSnackBar(
-                          //             SnackBar(content: Text('${newTodo.name} Deleted'))));
-                          //   },
-                          //   icon: const Icon(Icons.delete_rounded, color: Colors.red),
-                          // ),
-                        ],
+          return StreamBuilder<Object>(
+            stream: null,
+            builder: (context, snapshot) {
+              return ListView.builder(
+                itemCount: todoBox.length,
+                itemBuilder: (ctx, index) {
+                  TodoApp newTodo = todoBox.getAt(index) as TodoApp;
+                  return Card(
+                    child: SizedBox(
+                      child: ListTile(
+                        title: Text(newTodo.name),
+                        subtitle: Column(
+                          children: [
+                            Text(newTodo.text),
+                            SizedBox(height: 20,),
+                            Text('${time.year}:${time.month}:${time.day}'),
+                            Text('${time.hour}:${time.minute}:${time.second}')
+                          ],
+                        ),
+                        leading: CircleAvatar(backgroundImage: MemoryImage(newTodo.image),),     
+                         trailing:Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                                 onPressed: () {
+                                    Navigator.push(
+                                     context,
+                                     MaterialPageRoute(
+                                        builder: (context) => EditScreen(
+                                         index: index,
+                                          name: newTodo.name,
+                                         text: newTodo.text,
+                                          image: newTodo.image,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.edit, color: Colors.blue),),
+                                  IconButton(onPressed: ()async{
+                                    todoBox.deleteAt(index).then((value) => 
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${newTodo.name}...deleted'))));
+                                  },
+                                         icon: const Icon(Icons.delete_rounded, color: Colors.red),
+                                  )
+                          ],
+                         )                 
                       ),
                     ),
-                  ),
-                ),
+                  );
+                },
               );
-            },
+            }
           );
         },
       ),

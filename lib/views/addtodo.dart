@@ -18,7 +18,6 @@ class AddTodo extends StatefulWidget {
 
 class _AddTodoState extends State<AddTodo> {
 
-  TimeOfDay selectedtime =TimeOfDay.now();
   final nameControllar = TextEditingController();
   final texcontroller = TextEditingController();
    late Box<TodoApp> todoBox;
@@ -34,11 +33,9 @@ class _AddTodoState extends State<AddTodo> {
   @override
   void dispose() {
     controller.dispose();
+    
     super.dispose();
   }
-
-  
-
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -48,37 +45,17 @@ class _AddTodoState extends State<AddTodo> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
       Obx(() => controller.selectedImagePath.value==''?
-      Text('select image form cemera/gallery ',style:TextStyle(fontSize: 20),)  
-       :Image.file(File(controller.selectedImagePath.value))
+      IconButton(onPressed: (){
+                     showimagePickeroption(context);
+      }, icon: Icon(Icons.add_a_photo,size: 60,),)
+     :Image.file(File(controller.selectedImagePath.value))
       ),
-     SizedBox(
-      height: 10,
-     ),
      Obx(() => Text(controller.selectedImageSize.value==''?'':
      controller.selectedImageSize.value, style: TextStyle(fontSize: 20),),
      ),
-           Center(
-            child: TextButton(onPressed: () {
-              
-              controller.getImage(ImageSource.camera);
-
-            }, child:Text("camera") ),
-           ),
-            Center(
-            child: TextButton(onPressed: () {
-              controller.getImage(ImageSource.gallery);
-
-            }, child:Text("gallery") ),
-           ),
-            CircleAvatar(
-              maxRadius: 100,
-          backgroundColor: Colors.brown.shade800,radius: 50,
-          
-          // child: const Icon(Icons.person,size: 30,),
-          
-        )
-        
-          ,
+     SizedBox(
+      height: 30,
+     ),
             TextFormField(
               controller: nameControllar,
                decoration: InputDecoration(
@@ -90,32 +67,30 @@ class _AddTodoState extends State<AddTodo> {
             ),
                         SizedBox(height: 10,),
         
-            TextFormField(
-              controller: texcontroller,
-               decoration: InputDecoration(
-                
-                    labelText: 'text',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                  ),
+            Column(
+              children: [
+                TextFormField(
+                  controller: texcontroller,
+                   decoration: InputDecoration(
+                    
+                        labelText: 'text',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32),
+                        ),
+                      ),
+                ),
+              ],
             ),
-                
-                        SizedBox(height: 10,),
-                        Text("${selectedtime.hour}:${selectedtime.minute}"),
+
             ElevatedButton(onPressed: ()async{
-              final TimeOfDay? timeOfDay = await showTimePicker(
-                context: context,
-                 initialTime: selectedtime,
-                 initialEntryMode: TimePickerEntryMode.dial,
-                  ); 
                final name=nameControllar.text;
                final text=texcontroller.text;
                String filePath=controller.selectedImagePath.value;
                Uint8List imagebytes=await File(filePath).readAsBytes();
-               controller.addNotes(name, text,imagebytes,);
-              
+               controller.addNotes(name, text,imagebytes, DateTime.now());
+
                 Navigator.pop(context);
+                
         
             }, child: const Text('Save'))
           ],
@@ -123,4 +98,50 @@ class _AddTodoState extends State<AddTodo> {
         ),),
     );
   }
+  void showimagePickeroption(BuildContext context){
+ showModalBottomSheet(
+  context: context,
+   builder: (builder){
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height /4,
+      child: Row(children: [
+        Expanded(
+          child: InkWell(  
+            onTap: (){
+             controller.getImage(ImageSource.gallery);
+            },
+            child: SizedBox(
+              child: Column(
+                children: [
+                  Icon(Icons.image),
+                  Text('Gallery')
+                ],
+              ),
+            ),
+          ),
+        ),
+           Expanded(
+             child: InkWell(  
+                     onTap: (){
+                     controller.getImage(ImageSource.camera);
+                     },
+                     child: SizedBox(
+              child: Column(
+                children: [
+                  Icon(Icons.camera),
+                  Text('Camera')
+                ],
+              ),
+                     ),
+                   ),
+           )
+      ],),
+    );
+   }
+   );
+ 
 }
+}
+
+  
