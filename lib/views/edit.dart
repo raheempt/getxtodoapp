@@ -42,7 +42,7 @@ class _EditScreenState extends State<EditScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Update'),
-        backgroundColor: Color.fromARGB(255, 26, 149, 231),
+        backgroundColor: Color.fromARGB(255, 132, 26, 231),
       ),
       body: Center(
         child: Column(

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getxtodohive/condroller/condroller.dart';
 import 'package:getxtodohive/model/TodoApp.dart';
+import 'package:getxtodohive/views/Homescreen.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -32,8 +33,7 @@ class _AddTodoState extends State<AddTodo> {
 
   @override
   void dispose() {
-    controller.dispose();
-    
+    controller.dispose(); 
     super.dispose();
   }
   @override
@@ -48,8 +48,7 @@ class _AddTodoState extends State<AddTodo> {
       IconButton(onPressed: (){
                      showimagePickeroption(context);
       }, icon: Icon(Icons.add_a_photo,size: 60,),)
-     :Image.file(File(controller.selectedImagePath.value))
-      ),
+     :Image.file(File(controller.selectedImagePath.value))),
      Obx(() => Text(controller.selectedImageSize.value==''?'':
      controller.selectedImageSize.value, style: TextStyle(fontSize: 20),),
      ),
@@ -72,7 +71,6 @@ class _AddTodoState extends State<AddTodo> {
                 TextFormField(
                   controller: texcontroller,
                    decoration: InputDecoration(
-                    
                         labelText: 'text',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(32),
@@ -89,9 +87,9 @@ class _AddTodoState extends State<AddTodo> {
                Uint8List imagebytes=await File(filePath).readAsBytes();
                controller.addNotes(name, text,imagebytes, DateTime.now());
 
-                Navigator.pop(context);
+
+                Get.to(HomeScreen());
                 
-        
             }, child: const Text('Save'))
           ],
               ),
@@ -102,41 +100,44 @@ class _AddTodoState extends State<AddTodo> {
  showModalBottomSheet(
   context: context,
    builder: (builder){
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height /4,
-      child: Row(children: [
-        Expanded(
-          child: InkWell(  
-            onTap: (){
-             controller.getImage(ImageSource.gallery);
-            },
-            child: SizedBox(
-              child: Column(
-                children: [
-                  Icon(Icons.image),
-                  Text('Gallery')
-                ],
+    return Padding(
+      padding: const EdgeInsets.all(18.0),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height /4,
+        child: Row(children: [
+          Expanded(
+            child: InkWell(  
+              onTap: (){
+               controller.getImage(ImageSource.gallery);
+              },
+              child: SizedBox(
+                child: Column(
+                  children: [
+                    Icon(Icons.image),
+                    Text('Gallery')
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-           Expanded(
-             child: InkWell(  
-                     onTap: (){
-                     controller.getImage(ImageSource.camera);
-                     },
-                     child: SizedBox(
-              child: Column(
-                children: [
-                  Icon(Icons.camera),
-                  Text('Camera')
-                ],
-              ),
+             Expanded(
+               child: InkWell(  
+                       onTap: (){
+                       controller.getImage(ImageSource.camera);
+                       },
+                       child: SizedBox(
+                child: Column(
+                  children: [
+                    Icon(Icons.camera),
+                    Text('Camera')
+                  ],
+                ),
+                       ),
                      ),
-                   ),
-           )
-      ],),
+             )
+        ],),
+      ),
     );
    }
    );

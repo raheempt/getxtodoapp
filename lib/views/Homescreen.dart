@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           return StreamBuilder<Object>(
             stream: null,
-            builder: (context, snapshot) {
+            builder: ( context, snapshot) {
               return ListView.builder(
                 itemCount: todoBox.length,
                 itemBuilder: (ctx, index) {
