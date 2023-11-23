@@ -21,13 +21,18 @@ class _AddTodoState extends State<AddTodo> {
 
   final nameControllar = TextEditingController();
   final texcontroller = TextEditingController();
-   late Box<TodoApp> todoBox;
   late TodoModelController controller;
+     late Box<TodoApp> todoBox;
+  late RxString selectedImagePath;
+  late RxString selectedImageSize;
   
   @override
   void initState() {
     todoBox = Hive.box<TodoApp>('todoBox');
     controller = Get.put(TodoModelController());
+       controller.resetImageSelection();
+       selectedImagePath = controller.selectedImagePath;
+    selectedImageSize = controller.selectedImageSize;
     super.initState();
   }
 
@@ -44,14 +49,20 @@ class _AddTodoState extends State<AddTodo> {
           child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-      Obx(() => controller.selectedImagePath.value==''?
-      IconButton(onPressed: (){
-                     showimagePickeroption(context);
-      }, icon: Icon(Icons.add_a_photo,size: 60,),)
-     :Image.file(File(controller.selectedImagePath.value))),
-     Obx(() => Text(controller.selectedImageSize.value==''?'':
-     controller.selectedImageSize.value, style: TextStyle(fontSize: 20),),
-     ),
+ selectedImagePath.value.isEmpty
+                  ? IconButton(
+                      onPressed: () {
+                        showimagePickeroption(context);
+                      },
+                      icon: Icon(Icons.add_a_photo, size: 60),
+                    )
+                  : Image.file(File(selectedImagePath.value)),
+              selectedImageSize.value.isNotEmpty
+                  ? Text(
+                      selectedImageSize.value,
+                      style: TextStyle(fontSize: 10),
+                    )
+                  : SizedBox(),
      SizedBox(
       height: 30,
      ),
@@ -113,6 +124,7 @@ class _AddTodoState extends State<AddTodo> {
               },
               child: SizedBox(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.image),
                     Text('Gallery')
@@ -128,6 +140,7 @@ class _AddTodoState extends State<AddTodo> {
                        },
                        child: SizedBox(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.camera),
                     Text('Camera')

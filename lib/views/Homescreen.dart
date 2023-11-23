@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           return StreamBuilder<Object>(
             stream: null,
-            builder: ( context, snapshot) {
+            builder: (context, snapshot) {
               return ListView.builder(
                 itemCount: todoBox.length,
                 itemBuilder: (ctx, index) {
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text(newTodo.text),
                             SizedBox(height: 20,),
-                            Text('${time.year}:${time.month}:${time.day}'),
+                            Text('${time.day}:${time.month}:${time.year}'),
                             Text('${time.hour}:${time.minute}:${time.second}')
                           ],
                         ),

@@ -42,14 +42,7 @@ class WelcomeScreen extends StatelessWidget {
   
         ) ,
       ),
-      // bottomNavigationBar: BottomNavigationBar(items: [bottomnavigationbar()]),
     );
   }
 }
 
-// bottomnavigationbar() {
-//   return BottomNavigationBarItem(
-//     icon: Icon(CupertinoIcons.home),
-//     label: 'home',
-//     );
-// }

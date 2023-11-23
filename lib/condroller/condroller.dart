@@ -12,8 +12,13 @@ import 'package:image_picker/image_picker.dart';
 class TodoModelController extends GetxController {
 
 var selectedImagePath=''.obs;
-var selectedImageSize=''.obs;
+var selectedImageSize=''.obs;  
 
+
+  void resetImageSelection() {
+    selectedImagePath.value = '';
+    selectedImageSize.value = '';
+  }
  void getImage(ImageSource imageSource)async
 {
   
