@@ -30,7 +30,7 @@ class _AddTodoState extends State<AddTodo> {
   void initState() {
     todoBox = Hive.box<TodoApp>('todoBox');
     controller = Get.put(TodoModelController());
-       controller.resetImageSelection();
+       controller.  resetImageSelection();
        selectedImagePath = controller.selectedImagePath;
     selectedImageSize = controller.selectedImageSize;
     super.initState();

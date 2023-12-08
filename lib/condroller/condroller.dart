@@ -19,8 +19,7 @@ var selectedImageSize=''.obs;
     selectedImagePath.value = '';
     selectedImageSize.value = '';
   }
- void getImage(ImageSource imageSource)async
-{
+ void getImage(ImageSource imageSource)async{
   
   final pickedFile=await ImagePicker().pickImage(source:imageSource); 
   if(pickedFile!=null){
